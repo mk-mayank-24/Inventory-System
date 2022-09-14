@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static' , filename='CSS/sidebar.css')}}">
+        <script src="{{ url_for('static' , filename='script/auto.js')}}"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" >
+        <style>
+            body {
+                margin: 0;
+                font-family: "Lato", sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="sidebar">
+            <a href="/">Products</a>
+            <a href="/location">Locations</a>
+            <a href="/productMovement">Product Movements</a>
+        </div>
+
+        <div class="container content">
+            <h1><br /> </h1>
+            <h2>location Table </h2>
+            <a href="/addLocation"><button type="button" class="btn btn-outline-primary">ADD</button></a>
+            <h1><br /> </h1>            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Location Name</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John</td>
+                        <td>Doe</td>
+                        <td><a href="/updateLocation"><button type="button" class="btn btn-outline-warning">Update</button></a></td>
+                        <td><button type="button" class="btn btn-outline-danger" onclick="deleteData()">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
