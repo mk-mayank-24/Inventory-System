@@ -25,13 +25,14 @@
     </head>
     <body>
         <div class="center">
-            <form>
+            <form action = "{{url_for('updatelocation1')}}" method = "POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" id="id" value="{{loc[0]}}">
                 <div class="form-floating mb-3 mt-3">
-                    <input type="text" class="form-control" id="Name" placeholder="Enter Name" name="Name">
+                    <input type="text" class="form-control" id="loc" placeholder="Enter Name" name="loc" value="{{loc[1]}}">
                     <label for="email">Location Name</label>
                 </div>
                 <div class="form-floating mb-3 mt-3">
-                    <a href="/location" class="d-grid"><button type="button" class="btn btn-primary btn-block" >UPDATE</button></a>
+                    <a href="" class="d-grid"><button class="btn btn-primary btn-block" >UPDATE</button></a>
                 </div>
             </form>
         </div>

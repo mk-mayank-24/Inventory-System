@@ -35,12 +35,14 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for loc in location %}
                     <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td><a href="/updateLocation"><button type="button" class="btn btn-outline-warning">Update</button></a></td>
-                        <td><button type="button" class="btn btn-outline-danger" onclick="deleteData()">Delete</button></td>
+                        <td>{{loc[0]}}</td>
+                        <td>{{loc[1]}}</td>
+                        <td><a href="{{url_for('updatelocation', id = loc[0] )}}"><button type="button" class="btn btn-outline-warning">Update</button></a></td>
+                        <td><a href="{{url_for('deletelocation1', id = loc[0] )}}"><button type="button" class="btn btn-outline-danger" onclick="deleteData()">Delete</button></a></td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

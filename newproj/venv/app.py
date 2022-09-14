@@ -15,7 +15,9 @@ def product():
 
 @app.route('/location')
 def location():
-    return render_template("location.html")
+    
+    loc=cur.execute("SELECT * FROM location" ).fetchall()
+    return render_template("location.html" , location = loc)
 
 @app.route('/productMovement')
 def productMovement():
@@ -36,9 +38,11 @@ def updateProduct(id):
 def addlocation():
     return render_template("addLocation.html")
 
-@app.route('/updateLocation')
-def updatelocation():
-    return render_template("updateLocation.html")
+@app.route('/updateLocation/<int:id>' , methods=['GET' , 'POST'])
+def updatelocation(id):
+    loc= cur.execute("Select * from location where id = ?" ,(id,)).fetchall()
+    print(loc)
+    return render_template("updateLocation.html" , loc=loc[0])
 
 
 @app.route('/addProductMovement')
@@ -56,15 +60,9 @@ def addProduct1():
         name = request.form['name']
         price = int(request.form['price'])
         desc = request.form['description']
-        # print("POst")
         cur.execute("INSERT INTO product (name,price,Description) VALUES (?,?,?)",(name,price,desc) )
         con.commit()
-    cur.execute("Select * from product" )
-    proAvl=cur.fetchall()
-    # print(proAvl)
-    return render_template("product.html" , productAvilable = proAvl )
-    # return redirect(url_for("home"))
-    # product()
+    return redirect(url_for('product'))
 
 @app.route('/updateProductDB' ,methods=[ 'GET', 'POST'])
 def updateProduct1():
@@ -78,50 +76,42 @@ def updateProduct1():
 
         cur.execute("UPDATE product SET name = ? , price = ? , Description =? WHERE id = ?",(name,price,desc,id) )
         con.commit()
-    cur.execute("Select * from product" )
-    proAvl=cur.fetchall()
-    # print(proAvl)
-    return render_template("product.html" , productAvilable = proAvl )
+    return redirect(url_for('product'))
     
 @app.route('/deleteProductDB/<int:id>' ,methods=[ 'GET', 'POST'])
 def deleteProduct1(id):
     
-
     cur.execute("DELETE from product  WHERE id = ?",(id,) )
     con.commit()
-    cur.execute("Select * from product" )
-    proAvl=cur.fetchall()
-    # print(proAvl)
-    return render_template("product.html" , productAvilable = proAvl )
+    return redirect(url_for('product'))
 
 @app.route('/addLocationDB' ,methods=[ 'GET', 'POST'])
 def addLocation1():
-    
+
     if request.method == 'POST':
         loc = request.form['loc']
-
-        cur.execute("INSERT INTO location (location) VALUES (?)",(loc,) )
+        cur.execute("INSERT INTO location(location) VALUES(?)",(loc,) )
         con.commit()
-    cur.execute("Select * from product" )
-    proAvl=cur.fetchall()
-    
-    return render_template("product.html" , productAvilable = proAvl )
+    return redirect(url_for('location'))
 
 @app.route('/updateLocationDB' ,methods=[ 'GET', 'POST'])
-def updateLocation1():
+def updatelocation1():
 
     if request.method == 'POST':
         print("asa")
         id = int(request.form['id'])
-        loc = int(request.form['loc'])
-        
+        loc = request.form['loc']
 
-        cur.execute("UPDATE product SET location = ? WHERE id = ?",(loc,id) )
+        cur.execute("UPDATE location SET location = ? WHERE id = ?",(loc,id) )
         con.commit()
-    cur.execute("Select * from product" )
-    proAvl=cur.fetchall()
-    # print(proAvl)
-    return render_template("product.html" , productAvilable = proAvl )
+    return redirect(url_for('location'))
+
+@app.route('/deleteLocationDB/<int:id>' ,methods=[ 'GET', 'POST'])
+def deletelocation1(id):
+
+    cur.execute("DELETE from location  WHERE id = ?",(id,) )
+    con.commit()
+    return redirect(url_for('location'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
