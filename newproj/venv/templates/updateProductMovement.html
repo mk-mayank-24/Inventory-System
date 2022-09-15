@@ -3,7 +3,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{{ url_for('static' , filename='CSS/sidebar.css')}}">
-        <script src="{{ url_for('static' , filename='script/popups.js')}}"></script>
+        <!-- <script src="{{ url_for('static' , filename='script/popups.js')}}"></script> -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" >
         <style>
             body {
@@ -25,22 +25,28 @@
     </head>
     <body>
         <div class="center">
-            <form>
+            <form action = "/updateProductMovementDB" method = "POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" id="id" value="{{pm[0]}}">
                 <div class="form-floating mb-3 mt-3">
-                    <input type="text" class="form-control" id="Name" placeholder="Enter Name" name="Name">
-                    <label for="email">Name</label>
+                    <input type="text" class="form-control" id="Product" placeholder="Enter Name" name="product" value="{{pm[2]}}" readonly>
+                    <label for="email">product</label>
                 </div>
           
                 <div class="form-floating mt-3 mb-3">
-                    <input type="text" class="form-control" id="Price" placeholder="Enter Price" name="Price">
-                    <label for="pwd">Price</label>
+                    <select class="form-control" name="location" id="location">
+                        {% for l in loc %}
+                        <option value="{{l[0]}}">{{l[1]}}</option>
+                        {% endfor %}
+                    </select>
+                    
+                    <label for="pwd">Warehouse</label>
                 </div>
                 <div class="form-floating mb-3 mt-3">
-                    <input type="text" class="form-control" id="Description" placeholder="Enter Description" name="Description">
-                    <label for="email">Description</label>
+                    <input type="text" class="form-control" id="qty" placeholder="Enter Description" name="qty" value="{{pm[3]}}">
+                    <label for="email">Quantity</label>
                 </div>
                 <div class="form-floating mb-3 mt-3">
-                    <a href="/" class="d-grid"><button type="button" class="btn btn-primary btn-block" >ADD</button></a>
+                    <a href="" class="d-grid"><button class="btn btn-primary btn-block" >ADD</button></a>
                 </div>
             </form>
         </div>

@@ -21,29 +21,33 @@
 
         <div class="container content">
             <h1><br /> </h1>
-            <h2>Product Movements Table </h2>
-            <a href="/addProductMovement"></a><button type="button" class="btn btn-outline-primary">ADD</button>
+            <h2>Product Movements Table &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                <a href="/addProductMovement"><button type="button" class="btn btn-outline-primary">ADD</button></a>
+            </h2>
+            
             <h1><br /> </h1>            
             <table class="table">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Product Name</th>
-                        <th>location Form</th>
-                        <th>Location To</th>
+                        <th>Warehouse</th>
+                        <th>Qty</th>
                         <th>Update</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for p in pm %}
                     <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>john@example.com</td>
-                        <td>Doe</td>
-                        <td><a href="/updateProductMovement"><button type="button" class="btn btn-outline-warning">Update</button></a></td>
-                        <td><button type="button" class="btn btn-outline-danger">Delete</button></td>
+                        <td>{{p[0]}}</td>
+                        <td>{{p[2]}}</td>
+                        <td>{{p[4]}}</td>
+                        <td>{{p[5]}}</td>
+                        <td><a href="{{url_for('updateproductMovement', id = p[0] )}}"><button type="button" class="btn btn-outline-warning">Update</button></a></td>
+                        <td><a href="{{url_for('deleteProductMovement1', id = p[0] )}}"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

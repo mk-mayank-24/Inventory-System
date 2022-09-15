@@ -1,3 +1,4 @@
+from asyncio import QueueEmpty
 import sqlite3
 from unicodedata import name
 # from urllib import request
@@ -21,7 +22,9 @@ def location():
 
 @app.route('/productMovement')
 def productMovement():
-    return render_template("productMovement.html")
+    pm=cur.execute("SELECT productmovement.id,product.id,product.name,location.id,location.location,qty FROM product,location,productmovement where productmovement.pid = product.id and productmovement.warehouse = location.id" ).fetchall()
+    print(pm)
+    return render_template("productMovement.html" , pm = pm)
 
 @app.route('/addProduct')
 def addProduct():
@@ -47,15 +50,21 @@ def updatelocation(id):
 
 @app.route('/addProductMovement')
 def addproductMovement():
-    return render_template("addProductMovement.html")
+    pro=cur.execute("SELECT id,name FROM product" ).fetchall()
+    loc=cur.execute("SELECT * FROM location" ).fetchall()
+    return render_template("addProductMovement.html" , product = pro , location = loc)
 
-@app.route('/updateProductMovement')
-def updateproductMovement():
-    return render_template("updateProductMovement.html")
+
+@app.route('/updateProductMovement/<int:id>', methods=['GET', 'POST'])
+def updateproductMovement(id):
+    pm=cur.execute("SELECT productmovement.id,product.id,product.name,qty FROM product,productmovement where productmovement.pid = product.id and productmovement.id =?" ,(id,) ).fetchall()
+    loc=cur.execute("SELECT * FROM location" ).fetchall()
+    print(pm)
+    print(loc)
+    return render_template("updateProductMovement.html" , pm=pm[0] , loc = loc)
 
 @app.route('/addProductDB' ,methods=[ 'GET', 'POST'])
 def addProduct1():
-    print(request.form['name'])
     if request.method == 'POST':
         name = request.form['name']
         price = int(request.form['price'])
@@ -68,7 +77,6 @@ def addProduct1():
 def updateProduct1():
     print(request.form['Name'])
     if request.method == 'POST':
-        print("asa")
         id = int(request.form['id'])
         name = request.form['Name']
         price = int(request.form['Price'])
@@ -112,6 +120,36 @@ def deletelocation1(id):
     cur.execute("DELETE from location  WHERE id = ?",(id,) )
     con.commit()
     return redirect(url_for('location'))
+
+@app.route('/addProductMovementDB',methods=[ 'GET', 'POST'])
+def addproductMovement1():
+    if request.method == 'POST':
+        pid = request.form['products']
+        warehouse = int(request.form['location'])
+        qty = request.form['qty']
+        cur.execute("INSERT INTO productmovement (pid,warehouse,qty) VALUES (?,?,?)",(pid,warehouse,qty) )
+        con.commit()
+    return redirect(url_for('productMovement'))
+
+@app.route('/updateProductMovementDB' ,methods=[ 'GET', 'POST'])
+def updateProductmovement1():
+
+    if request.method == 'POST':
+        id = int(request.form['id'])
+        loc = int(request.form['location'])
+        Qty = request.form['qty']
+
+        cur.execute("UPDATE productmovement SET warehouse = ? ,qty = ? WHERE id = ?",(loc,Qty,id) )
+        con.commit()
+    return redirect(url_for('productMovement'))
+
+@app.route('/deleteProductMovementDB/<int:id>' ,methods=[ 'GET', 'POST'])
+def deleteProductMovement1(id):
+
+    cur.execute("DELETE from productmovement  WHERE id = ?",(id,) )
+    con.commit()
+    return redirect(url_for('productMovement'))
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
